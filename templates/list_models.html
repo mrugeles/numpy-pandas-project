@@ -1,0 +1,35 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Trained models</h6>
+            </div>
+            <div class="card-body" style="overflow: auto">
+                <table class="table">
+                      <thead>
+                        <tr>
+                            <th scope="col">Project</th>
+                            <th scope="col">Model</th>
+                            <th scope="col">Model score</th>
+                            <th scope="col">Target</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for index, row in models.iterrows() %}
+                        <tr>
+                            <td>{{row['project_name']}}</a></td>
+                            <td>{{row['model_name']}}</td>
+                            <td>{{row['model_score']}}</td>
+                            <td>{{row['target']}}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

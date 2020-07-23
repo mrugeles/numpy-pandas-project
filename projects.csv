@@ -1,0 +1,2 @@
+project_name,project_path,model_name,model_score,target,null_threshold,cardinal_threshold
+Titanic,static/projects/Titanic,GradientBoostingClassifier,0.8435754189944135,Survived,30,30

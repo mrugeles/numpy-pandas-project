@@ -1,0 +1,118 @@
+{% extends "template.html" %}
+
+{% block content %}
+<form action="/create_model" method="post" enctype=multipart/form-data>
+    <input name="dataset_path" type="hidden"  id="dataset_path" value="{{dataset_path}}">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Features types</h6>
+                </div>
+                <div class="card-body" style="overflow: auto">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="datatypes-tab" data-toggle="tab" href="#datatypes" role="tab" aria-controls="datatypes" aria-selected="true">Data types</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="datatypes" role="tabpanel" aria-labelledby="datatypes-tab">
+                          <table class="table">
+                      <thead>
+                        <tr>
+                            {% for column in columns %}
+                                <th scope="col" class="text-center">{{column}}</th>
+                            {% endfor %}
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                            {% for column in columns %}
+
+                                <td>
+                                    <select class="custom-select custom-select-sm" style="width:200px"  name="{{column}}_type" id="{{column}}_type">
+                                      <option value="int64" {{'selected' if columns_types[column] == 'int64' else ''}}>Int</option>
+                                      <option value="float64" {{'selected' if columns_types[column] == 'float64' else ''}}>Float</option>
+                                      <option value="object" {{'selected' if columns_types[column] == 'object' else ''}}>String</option>
+                                    </select>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% for record in records %}
+                        <tr>
+                                {% for column in columns %}
+                                <td>{{record[column]}}</td>
+                                {% endfor %}
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                      </div>
+                      <div class="tab-pane fade" id="settings" role="settings" aria-labelledby="settings-tab">
+                          <br/>
+                          <div class="form-group row">
+                            <label for="target" class="col-sm-2 col-form-label">Project name</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="project_name">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="target" class="col-sm-2 col-form-label">Target</label>
+                            <div class="col-sm-10">
+                                <select class="custom-select custom-select-sm" style="width: min-content" name="target" id="target">
+                                    {% for column in columns%}
+                                      <option value="{{column}}">{{column}}</option>
+                                    {% endfor%}
+                                    </select>
+
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="null_threshold" class="col-sm-2 col-form-label">Null threshold %</label>
+                            <div class="col-sm-10">
+                              <input type="range" min="1" max="100" value="30"  class="form-control-range" name="null_threshold" id="null_threshold">
+                                <span id="null_value"></span> %
+                                <script>
+                                    var slider = document.getElementById("null_threshold");
+                                    var output = document.getElementById("null_value");
+                                    output.innerHTML = slider.value;
+
+                                    slider.oninput = function() {
+                                      output.innerHTML = this.value;
+                                    }
+                                 </script>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="cardinal_threshold" class="col-sm-2 col-form-label">Cardinal threshold %</label>
+                            <div class="col-sm-10">
+                              <input type="range" min="1" max="100" value="30"  class="form-control-range" name="cardinal_threshold" id="cardinal_threshold">
+                                <span id="cardinal_value"></span> %
+                                <script>
+                                    var slider_cardinal = document.getElementById("cardinal_threshold");
+                                    var output_cardinal = document.getElementById("cardinal_value");
+                                    output_cardinal.innerHTML = slider_cardinal.value;
+
+                                    slider_cardinal.oninput = function() {
+                                      output_cardinal.innerHTML = this.value;
+                                    }
+                                 </script>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Create model</button>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+</div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div class="row">
+
+<!-- Area Chart -->
+<div class="col-xl-12">
+  <div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Training results</h6>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body" style="overflow: auto">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="models-tab" data-toggle="tab" href="#models" role="tab" aria-controls="models" aria-selected="true">Models comparison</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="dataset-tab" data-toggle="tab" href="#dataset" role="tab" aria-controls="settings" aria-selected="false">Dataset</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="processed_dataset-tab" data-toggle="tab" href="#processed_dataset" role="tab" aria-controls="settings" aria-selected="false">Processed Dataset</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="models" role="tabpanel" aria-labelledby="models-tab">
+                <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myAreaChart" style="display: block; height: 300px; width: 782px;" width="977" height="300" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+            <div class="tab-pane" id="dataset" role="tabpanel" aria-labelledby="dataset-tab">
+                 <table class="table">
+                      <thead>
+                        <tr>
+                            {% for column in dataset.columns %}
+                                <th scope="col" class="text-center">{{column}}</th>
+                            {% endfor %}
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for index, row in dataset.iterrows() %}
+                        <tr>
+                                {% for column in dataset.columns %}
+                                <td>{{row[column]}}</td>
+                                {% endfor %}
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+            </div>
+            <div class="tab-pane" id="processed_dataset" role="tabpanel" aria-labelledby="processed_dataset-tab">
+                <table class="table">
+                      <thead>
+                        <tr>
+                            {% for column in dataset_processed.columns %}
+                                <th scope="col" class="text-center">{{column}}</th>
+                            {% endfor %}
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for index, row in dataset_processed.iterrows() %}
+                        <tr>
+                                {% for column in dataset_processed.columns %}
+                                <td>{{row[column]}}</td>
+                                {% endfor %}
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+            </div>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- Page level plugins -->
+<script src="{{ url_for('static', filename='vendor/chart.js/Chart.min.js') }}"></script>
+<!-- Page level custom scripts
+<script src="{{ url_for('static', filename='js/demo/chart-area-demo.js') }}"></script>
+-->
+<script>
+
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
+
+
+    var MODELS = {{models|tojson}};
+
+    var color = Chart.helpers.color;
+    var barChartData = {
+        labels: MODELS,
+        datasets: [
+            {
+                label: 'Model score',
+                backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.green,
+                borderWidth: 1,
+                data: {{scores|tojson}}
+            }
+        ]
+    }
+
+    window.onload = function() {
+			var ctx = document.getElementById('myAreaChart').getContext('2d');
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Models scores comparison'
+					}
+				}
+			});
+
+		};
+</script>
+{% endblock %}

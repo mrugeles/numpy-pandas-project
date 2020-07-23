@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Home</h1>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Create new model</h6>
+            </div>
+            <div class="card-body">
+                <form action="/prepare_dataset" method="post" enctype=multipart/form-data>
+                    <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input"  id="file" name="file" placeholder="Select dataset">
+                                <label class="custom-file-label" for="file">Select dataset</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-success">Upload dataset</button>
+                        </div>
+                    </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

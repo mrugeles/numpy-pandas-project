@@ -1,0 +1,1 @@
+{"removed_columns": ["Cabin", "PassengerId", "Name", "Ticket"], "numeric_columns": {"Pclass": {"min": 1, "max": 3}, "Age": {"min": 0.42, "max": 80.0}, "SibSp": {"min": 0, "max": 8}, "Parch": {"min": 0, "max": 6}, "Fare": {"min": 0.0, "max": 512.3292}}, "categorical_columns": {"Sex": {"values": ["male", "female"]}, "Embarked": {"values": ["S", "C", "Q"]}}}
