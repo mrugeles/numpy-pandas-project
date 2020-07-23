@@ -5,7 +5,7 @@ ML Bot is a web application for building machine learning models without coding.
 ### Run app
 
 ```bash
-# python app.pt
+# python app.py
 ```
 
 ### Run unit tests
